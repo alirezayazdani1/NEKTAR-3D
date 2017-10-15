@@ -1,0 +1,20 @@
+#!/bin/sh
+
+name1="cylinder"
+name2="IO_3D_1"
+file_start=4
+file_end=4
+nproc=128
+
+i=file_start
+j=0
+for (( i = file_start ; i <= file_end; i++,j++ )) ### Inner for loop ###
+do
+  echo "Working on file ${name1}_$i"
+  cd ${name2}/${name1}/CHK_DATA_$i
+   ../../../p2sfld_s -p $nproc -s $i -fname ${name1}
+  mv *.rst ../..
+  cd ../../..
+
+./nek2tec -o ${name2}/${name1}_$i.dat -f -r ${name2}/${name1}.rea ${name2}/${name1}_$i.rst
+done
